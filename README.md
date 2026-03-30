@@ -1,6 +1,12 @@
 # news-kg
 
-Fetches top headlines from NewsAPI, converts each item into typed Python models, and stores them as JSON.
+Builds a news knowledge graph pipeline:
+
+1. Scrape top headlines
+2. Summarize article context
+3. Perform Named Entity Recognition (NER)
+4. Perform Relation Extraction
+5. Build a Knowledge Graph in Neo4j
 
 ## Setup
 
@@ -22,6 +28,8 @@ pip install -r requirements.txt
 python src/news_fetcher.py
 ```
 
+This creates the raw headline/article dataset used by downstream NLP stages.
+
 ## Output
 
 The fetcher writes typed article records to:
@@ -42,3 +50,14 @@ Optional args:
 - `--output` path for context JSON (default: `data/top_headlines_us_context.json`)
 - `--limit` process only first `N` articles
 - `--timeout` scrape timeout per URL in seconds
+
+## End-to-end pipeline
+
+The project flow is:
+
+`Headlines Scrape -> Summarization -> NER -> Relation Extraction -> Neo4j Knowledge Graph`
+
+Current data artifacts in this repo:
+
+- Raw headlines/articles: `data/top_headlines_us.json`
+- Context-enriched records: `data/top_headlines_us_context.json`
